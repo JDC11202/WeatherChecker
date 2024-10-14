@@ -1,2 +1,2 @@
 # WeatherChecker
-A Bash script designed at reading text file data or command line input and outputting weather results provided by wttr.in
+A Bash script made for reading location text files and/or command line input and outputting weather results provided by wttr.in
