@@ -75,29 +75,29 @@ locations=()
 
 # Regex function to validate location format
 function is_valid_location() {
-    # Allows letters, numbers, spaces, dashes, and underscores for wttr.in formatting
-    [[ "$1" =~ ^[a-zA-Z0-9\ _-]+$ ]]
+    # Allows letters, numbers, spaces, dashes, underscores, and plus signs for wttr.in formatting
+    [[ "$1" =~ ^[a-zA-Z0-9\ _+-]+$ ]]
 }
 
-# If a file is provided, read locations line from line.
+# If a file is provided, read lines.
 if [ -n "$file" ]; then
     if [[ ! -f "$file" ]]; then
         echo "File not found: $file"
         exit 1
     fi
     while IFS= read -r line; do
-        # Trim whitespace
+        # Trim space
         line=$(echo "$line" | xargs)
-        # Validate through regex statement and add to locations if it's a valid location
+        # Validate with regex function and add to location list if valid
         if is_valid_location "$line"; then
+            echo "Location Imported: $line"
+            line=${line// /+}
             locations+=("$line")
         else
             echo "Invalid location entry: '$line'. Skipping."
         fi
     done < "$file"
-    # Debug location output from file
-    echo "Locations imported from file: ${locations[@]}"
-# If a single location is provided, validate and add it to the list
+# If single location provided, validate and add to the list
 elif [ -n "$location" ]; then
     if is_valid_location "$location"; then
         locations+=("$location")
@@ -127,9 +127,9 @@ else
 fi
 
 if [ "$report_type" == "simple" ]; then
-    weather_info=$(curl -s "https://wttr.in/{$locations_string}?format=3&$Temp_unit")
+    weather_info=$(curl -s "https://wttr.in/{$locations_string}?T&format=3&$Temp_unit")
 else
-    weather_info=$(curl -s "https://wttr.in/{$locations_string}?$Temp_unit")
+    weather_info=$(curl -s "https://wttr.in/{$locations_string}?T&$Temp_unit")
 fi
 
 # Check curl command success and output weather results

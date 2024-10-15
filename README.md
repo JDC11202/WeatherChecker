@@ -30,3 +30,8 @@ The following options can be utilized by users within the WeatherChecker script:
 * -t (type): Specify the type of weather report: Supported types are <ins>Simple</ins> and <ins>Detailed</ins>.
 * -u (unit): Specify the Standard Unit of Measure (Celcius or Fahrenheit).
 * -h: Display help information.
+
+## Examples
+
+- Fetching weather data for single City
+    ./WeatherChecker.sh -l New-York
