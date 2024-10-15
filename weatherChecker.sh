@@ -15,7 +15,7 @@ function display_usage() {
 
 echo "Welcome to WeatherChecker"
 
-# Check if any arguments were provided
+# Check args provided
 if [[ $# -eq 0 || "$1" == "-h" ]]; then
     display_usage
     exit 0
@@ -24,7 +24,7 @@ fi
 report_type="simple"
 location=""
 file=""
-output_file=""  # No default output file
+output_file=""
 unit="C"  # Default temperature unit (Celsius)
 
 # Handle options/arguments
@@ -70,16 +70,16 @@ while getopts ":l:f:o:t:u:h" opt; do
     esac
 done
 
-# Prepare the locations to check
+# Locations Array
 locations=()
 
-# Function to validate location format
+# Regex function to validate location format
 function is_valid_location() {
-    # Allow letters, numbers, spaces, dashes, and underscores
+    # Allows letters, numbers, spaces, dashes, and underscores for wttr.in formatting
     [[ "$1" =~ ^[a-zA-Z0-9\ _-]+$ ]]
 }
 
-# If a file is provided, read locations from it
+# If a file is provided, read locations line from line.
 if [ -n "$file" ]; then
     if [[ ! -f "$file" ]]; then
         echo "File not found: $file"
@@ -88,15 +88,15 @@ if [ -n "$file" ]; then
     while IFS= read -r line; do
         # Trim whitespace
         line=$(echo "$line" | xargs)
-        # Validate and add the line if it's a valid location
+        # Validate through regex statement and add to locations if it's a valid location
         if is_valid_location "$line"; then
             locations+=("$line")
         else
             echo "Invalid location entry: '$line'. Skipping."
         fi
     done < "$file"
-    # Debug output
-    echo "Locations from file: ${locations[@]}"
+    # Debug location output from file
+    echo "Locations imported from file: ${locations[@]}"
 # If a single location is provided, validate and add it to the list
 elif [ -n "$location" ]; then
     if is_valid_location "$location"; then
@@ -107,11 +107,8 @@ elif [ -n "$location" ]; then
     fi
 fi
 
-# Combine locations for wttr.in
+# Concat locations for wttr.in handling
 locations_string=$(IFS=,; echo "${locations[*]}")
-
-# Debug output
-echo "Combined locations string: $locations_string"
 
 # Check if locations are correctly populated
 if [ ${#locations[@]} -eq 0 ]; then
@@ -119,10 +116,10 @@ if [ ${#locations[@]} -eq 0 ]; then
     exit 1
 fi
 
-# Fetch and display the weather for the provided locations
+# Debug: Fetch and display the weather for the provided locations
 echo "Fetching weather for: $locations_string"
 
-# Set the unit parameter based on user input
+# Set the Temperature units parameter based on option input
 if [ "$unit" == "F" ]; then
     Temp_unit="u"
 else
@@ -135,11 +132,11 @@ else
     weather_info=$(curl -s "https://wttr.in/{$locations_string}?$Temp_unit")
 fi
 
-# Check if curl command was successful and output the weather
+# Check curl command success and output weather results
 if [[ $? -eq 0 && -n "$weather_info" ]]; then
-    echo "$weather_info"  # Echo the result to the command line
+    echo "$weather_info"  # Echo results
     if [ -n "$output_file" ]; then
-        echo "$weather_info" > "$output_file"  # Save to the output file if specified
+        echo "$weather_info" > "$output_file"  # Save to output file if option selected
         echo "Weather results saved to $output_file"
     else
         echo "No output file specified. Results will not be saved."

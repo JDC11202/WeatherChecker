@@ -1,4 +1,1 @@
-Cincinnati: ☁️   +55°F
-New-York: ⛅️  +62°F
-Taiwan: ☀️   +57°F
-Tokyo: 🌦   +76°F
+Cincinnati: ☁️   +56°F
