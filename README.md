@@ -17,8 +17,8 @@ This is a Bash script project is designed to make it easy to check weather forec
 
 To use the WeatherChecker script, run the following command within your terminal.
 
-<p>```bash
-    ./weatherChecher.sh [options]
+<p>```bash <br>
+./weatherChecher.sh [options]
 </p>
 
 ## Options
