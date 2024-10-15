@@ -24,6 +24,5 @@ To use the WeatherChecker script, run the following command within your terminal
 ## Options
 
 The following options can be utilized by users within the WeatherChecker script
-
-* -l "<location>": Specify a single input location, Supported formats for wttr.in include Cities (+ for spaces in names), airport codes, domain names, area codes, and coordinates.
-* -f <file>: Specify a text file containing locations (one per line).
+* -l (location): Specify a single input location, Supported formats for wttr.in include Cities (+ for spaces in names), airport codes, domain names, area codes, and coordinates.
+* -f (file): Specify a text file containing locations (one per line).
